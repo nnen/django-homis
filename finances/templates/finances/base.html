@@ -1,5 +1,9 @@
+{% load staticfiles %}
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="{% static "base.css" %}" />
+		<link rel="stylesheet" type="text/css" href="{% static "finances/finances.css" %}" />
+
 		{% block meta %}
 		{% endblock %}
 	</head>
@@ -7,6 +11,11 @@
 	<body>
 		<span class="title_bar">
 			<h1>Finances</h1>
+
+			<ul>
+				<li><a href="/finances">Finances</a></li>
+				<li><a href="/admin">Admin</a></li>
+			</ul>
 		</span>
 
 		<span class="content">
