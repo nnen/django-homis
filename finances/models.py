@@ -53,7 +53,10 @@ class Transaction(models.Model):
         return transaction
 
     def get_debt_graph(self):
-        return DebtGraph.from_json(self.debt_graph_json)
+        json_string = self.debt_graph_json
+        if json_string is None or json_string.strip() == "":
+            return DebtGraph()
+        return DebtGraph.from_json(json_string)
 
     def recalculate_debt_graph(self):
         previous = self.get_previous()
@@ -203,6 +206,14 @@ class DebtGraph(object):
                         debtor.add_debt(creditor2, min_amount)
 
                         change = True
+
+    @property
+    def debts(self):
+        for debtor in self.nodes.values():
+            for creditor, edge in debtor.edges.items():
+                debt = edge.get_debt(debtor)
+                if debt > 0:
+                    yield debtor.person, creditor.person, debt
 
     def to_json(self):
         value = []

@@ -1,0 +1,66 @@
+{% extends "finances/base.html" %}
+
+{% block content %}
+	<span class="debt_info_box">
+		<ul>
+		{% for debt in last_transaction.get_debt_graph.debts %}
+			<li>{{ debt.0.nick_name }} owes {{ debt.1.nick_name }} {{ debt.2|floatformat:2 }}</li>
+		{% endfor %}
+		</ul>
+	</span>
+
+	{% if transaction_list %}
+		<table class="transaction_table">
+			<tr>
+				<th>Date</th>
+				<th>Added by</th>
+				<th>Total</th>
+			</tr>
+		{% for transaction in transaction_list %}
+			<tr>
+				<td>{{ transaction.date }}</td>
+				<td>{{ transaction.entered_by.person.nick_name }}</td>
+				<td>{{ transaction.total }}</td>
+				<!-- <td></td> -->
+			</tr>
+			<tr>
+				<td></td>
+				<td colspan="2">
+					<table>
+						<tr>
+							<td>Payers</td>
+							<td>Receivers</td>
+							<td>Debts</td>
+						</tr>
+						<tr>
+							<td>
+								<ul>
+								{% for item in transaction.payers %}
+									<li>{{ item.person.nick_name }} paid {{ item.paid_amount|floatformat:2 }}</li>
+								{% endfor %}
+								</ul>
+							</td>
+							<td>
+								<ul>
+								{% for item in transaction.receivers %}
+									<li>{{ item.person.nick_name }} received {{ item.weight|floatformat }} part{{ item.weight|pluralize }}</li>
+								{% endfor %}
+								</ul>
+							</td>
+							<td>
+								<ul>
+								{% for debt in transaction.get_debt_graph.debts %}
+									<li>{{ debt.0.nick_name }} owes {{ debt.1.nick_name }} {{ debt.2|floatformat:2 }}</li>
+								{% endfor %}
+								</ul>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% else %}
+	    <p class="warning_box">No transactions are available.</p>
+	{% endif %}
+{% endblock %}

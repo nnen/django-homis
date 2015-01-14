@@ -12,10 +12,11 @@ class TransactionList(ListView):
 
 def index(request):
     #latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    transactions = Transaction.objects.order_by('date')
-    template = loader.get_template('finances/transaction_list.html')
+    transactions = Transaction.objects.order_by('-date')
+    template = loader.get_template('finances/index.html')
     context = RequestContext(request, {
         'transaction_list': transactions,
+        'last_transaction': transactions[0],
     })
     return HttpResponse(template.render(context))
 
