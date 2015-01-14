@@ -1,0 +1,28 @@
+{% extends "finances/base.html" %}
+
+{% block content %}
+	<h2>Transactions</h2>
+
+	{% if transaction_list %}
+		<table>
+			<tr>
+				<th>Id</th>
+				<th>Date</th>
+				<th>Added by</th>
+				<th>Total</th>
+			</tr>
+		{% for transaction in transaction_list %}
+			<tr>
+				<td>{{ transaction.id }}</td>
+				<td>{{ transaction.date }}</td>
+				<td>{{ transaction.entered_by }}</td>
+				<td>{{ transaction.total }}</td>
+				<td>{{ transaction.payers }}</td>
+				<td>{{ transaction.receivers }}</td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% else %}
+	    <p>No transactions are available.</p>
+	{% endif %}
+{% endblock %}
