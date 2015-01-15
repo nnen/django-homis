@@ -4,21 +4,28 @@
 		<link rel="stylesheet" type="text/css" href="{% static "base.css" %}" />
 		<link rel="stylesheet" type="text/css" href="{% static "finances/finances.css" %}" />
 
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
 		{% block meta %}
 		{% endblock %}
 	</head>
 
 	<body>
-		<span class="title_bar">
-			<p style="float: right">{{ user.username }}</p>
-
+		<div class="title_bar">
 			<h1>Finances</h1>
+
+			<p style="float: right">{{ user.username }}</p>
 
 			<ul>
 				<li><a href="{% url 'finances.views.index' %}">Finances</a></li>
 				<li><a href="{% url 'admin:index' %}">Admin</a></li>
 			</ul>
-		</span>
+		</div>
+
+		<div class="action_bar">
+			<a href="/finances/add_simple_payment" class="action_button">Simple payment</a>
+			<a href="/finances/add_transaction" class="action_button">Transaction</a>
+		</div>
 
 		<span class="content">
 			{% if messages %}
