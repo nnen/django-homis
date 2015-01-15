@@ -1,28 +1,44 @@
-{% extends "finances/base.html" %}
+{% load finances_extra %}
 
-{% block content %}
-	<h2>Transactions</h2>
-
-	{% if transaction_list %}
-		<table>
-			<tr>
-				<th>Id</th>
-				<th>Date</th>
-				<th>Added by</th>
-				<th>Total</th>
-			</tr>
-		{% for transaction in transaction_list %}
-			<tr>
-				<td>{{ transaction.id }}</td>
-				<td>{{ transaction.date }}</td>
-				<td>{{ transaction.entered_by }}</td>
-				<td>{{ transaction.total }}</td>
-				<td>{{ transaction.payers }}</td>
-				<td>{{ transaction.receivers }}</td>
-			</tr>
-		{% endfor %}
-		</table>
-	{% else %}
-	    <p>No transactions are available.</p>
-	{% endif %}
-{% endblock %}
+{% if transaction_list %}
+	<table class="transaction_table">
+		<tr>
+			<th>Date</th>
+			<th>Total</th>
+			<th>Payers</th>
+			<th>Receivers</th>
+			<th>Debts</th>
+			<th>Description</th>
+		</tr>
+	{% for transaction in transaction_list %}
+		<tr class="{% cycle odd_row even_row %}">
+			<td>{{ transaction.date }}</td>
+			<td style="text-align: right">{{ transaction.total }}</td>
+			<td>
+				<ul>
+				{% for item in transaction.payers %}
+					<li>{% person item.person %} paid {{ item.paid_amount|floatformat:2 }}</li>
+				{% endfor %}
+				</ul>
+			</td>
+			<td>
+				<ul>
+				{% for item in transaction.receivers %}
+					<li>{% person item.person %} received {{ item.weight|floatformat }} part{{ item.weight|pluralize }}</li>
+				{% endfor %}
+				</ul>
+			</td>
+			<td>
+				<ul>
+				{% for debt in transaction.get_debt_graph.debts %}
+					<li>{% person debt.0 %} owes {% person debt.1 %} {{ debt.2|floatformat:2 }}</li>
+				{% endfor %}
+				</ul>
+			</td>
+			<td>{{ transaction.description }}</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% else %}
+    <p class="warning_box">No transactions are available.</p>
+{% endif %}

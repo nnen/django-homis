@@ -15,7 +15,7 @@ class TransactionItemInline(admin.TabularInline):
 
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ("date", "entered_by", "total")
+    list_display = ("date", "entered_by", "total", "description")
 
     inlines = [
         TransactionItemInline,

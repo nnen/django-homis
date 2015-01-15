@@ -10,17 +10,29 @@
 
 	<body>
 		<span class="title_bar">
+			<p style="float: right">{{ user.username }}</p>
+
 			<h1>Finances</h1>
 
 			<ul>
-				<li><a href="/finances">Finances</a></li>
-				<li><a href="/admin">Admin</a></li>
+				<li><a href="{% url 'finances.views.index' %}">Finances</a></li>
+				<li><a href="{% url 'admin:index' %}">Admin</a></li>
 			</ul>
 		</span>
 
 		<span class="content">
-		{% block content %}
-		{% endblock %}
+			{% if messages %}
+			<div class="message_container">
+				{% for message in messages %}
+				<div class="message_box" style="background-color: #FF9;">
+					{{ message }}
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			{% block content %}
+			{% endblock %}
 		</span>
 	</body>
 </html>

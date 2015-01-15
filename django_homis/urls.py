@@ -6,8 +6,8 @@ urlpatterns = patterns('',
     # url(r'^$', 'django_homis.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls), name = "admin"),
 
-    url(r'^/', "finances.views.index"),
-    url(r'^finances/', include('finances.urls')),
+    url(r'^$', "finances.views.index"),
+    url(r'^finances/', include('finances.urls'), name = "finances"),
 )

@@ -2,6 +2,7 @@ import datetime
 import json
 
 from django.db import models
+from django.db import transaction as db_transaction
 from django.contrib.auth.models import User
 
 
@@ -58,6 +59,19 @@ class Transaction(models.Model):
             return DebtGraph()
         return DebtGraph.from_json(json_string)
 
+    def get_debts(self, person = None):
+        debt_graph = self.get_debt_graph()
+
+        if person is None:
+            return debt_graph.debts
+
+        result = []
+        for debtor, creditor, debt in debt_graph.debts:
+            if debtor.id == person.id:
+                result.append((debtor, creditor, debt))
+
+        return result
+
     def recalculate_debt_graph(self):
         previous = self.get_previous()
 
@@ -71,6 +85,32 @@ class Transaction(models.Model):
         debt_graph.simplify()
 
         self.debt_graph_json = debt_graph.to_json()
+
+    @classmethod
+    def get_last(cls):
+        return cls.objects.order_by("-date")[0]
+
+    @classmethod
+    def create_simple_payment(self, from_person, to_person, amount, current_user, description = ""):
+        with db_transaction.atomic():
+            transaction = Transaction(entered_by = current_user, description = description)
+            transaction.save()
+
+            item1 = TransactionItem(
+                transaction = transaction,
+                person = from_person,
+                paid_amount = float(amount),
+                weight = 0.0)
+
+            item2 = TransactionItem(
+                transaction = transaction,
+                person = to_person)
+
+            item1.save()
+            item2.save()
+
+            transaction.recalculate_debt_graph()
+            transaction.save()
 
 
 class TransactionItem(models.Model):
@@ -206,7 +246,7 @@ class DebtGraph(object):
                         debtor.add_debt(creditor2, min_amount)
 
                         change = True
-
+    
     @property
     def debts(self):
         for debtor in self.nodes.values():

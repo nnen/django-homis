@@ -1,0 +1,5 @@
+<form action="{% url 'finances.views.add_simple_payment' %}" method="post">
+	{% csrf_token %}
+	{{ simple_payment_form }}
+	<input type="submit" value="Add" />
+</form>

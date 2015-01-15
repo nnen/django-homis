@@ -1,0 +1,26 @@
+{% extends "finances/base.html" %}
+
+{% load finances_extra %}
+
+{% block content %}
+	<table>
+		<tr><th>Nick</th><td>{{ person.nick_name }}</td></tr>
+		{% if person.email %}
+		<tr><th>E-mail</th><td><a href="mailto:{{person.email}}">{{ person.email }}</a></td></tr>
+		{% else %}
+		<tr><th>E-mail</th><td>-</td></tr>
+		{% endif %}
+		{% if person.account_number %}
+		<tr><th>Bank account</th><td>{{ person.account_number }} / {{ person.bank_number }}</td></tr>
+		{% else %}
+		<tr><th>Bank account</th><td>-</td></tr>
+		{% endif %}
+	</table>
+
+	<table>
+		<tr><th colspan="2">Debts</th></tr>
+		{% for debt in debts %}
+		<tr><td>{{ debt.2 }}</td><td>{% person debt.1 %}</td></tr>
+		{% endfor %}
+	</table>
+{% endblock %}
