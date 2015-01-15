@@ -19,7 +19,7 @@
 				<th>Debts</th>
 			</tr>
 		{% for transaction in transaction_list %}
-			<tr class="{% cycle odd_row even_row %}">
+			<tr class="{% cycle "odd_row" "even_row" %}">
 				<td>{{ transaction.date }}</td>
 				<td style="text-align: right">{{ transaction.total }}</td>
 				<td>

@@ -1,4 +1,19 @@
 
+.transaction_table {
+	border-width: 0px;
+}
+
 .transaction_table td {
+	padding: 2pt 8pt;
+	margin: 0px;
 	vertical-align: top;
+}
+
+.transaction_table tr.odd_row td {
+	background-color: #DDE;
+}
+
+.transaction_table ul {
+	list-style-type: none;
+	padding: 0px;
 }

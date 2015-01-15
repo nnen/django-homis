@@ -22,3 +22,7 @@ def index(request):
 
     #return HttpResponse("Hello, world. You're at the polls index.")
 
+
+def add_simple_payment(request):
+    return index(request)
+
