@@ -1,8 +1,10 @@
 {% load staticfiles %}
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="{% static "base.css" %}" />
+		<link rel="stylesheet" type="text/css" href="{% static "homis_core/base.css" %}" />
 		<link rel="stylesheet" type="text/css" href="{% static "finances/finances.css" %}" />
+
+		<script type="text/javascript" src="{% static "homis_core/jquery-1.11.2.min" %}"></script>
 
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
@@ -14,9 +16,16 @@
 		<div class="title_bar">
 			<div class="login_box">
 				{% if user.is_authenticated %}
-					{{ user.username }} | log out
+					{{ user.username }} | <a href="{% url 'homis_core.views.log_out' %}">log out</a>
 				{% else %}
-					{{ login_form }}
+					<form action="{% url 'homis_core.views.log_in' %}" method="POST">
+						{% csrf_token %}
+						username:
+						<input type="text" name="username" />
+						password:
+						<input type="text" name="password" />
+						<input type="submit" value="log in" />
+					</form>
 				{% endif %}
 				
 			</div>
@@ -43,6 +52,8 @@
 				</div>
 				{% endfor %}
 			</div>
+			{% else %}
+			<!-- Messages: {{ messages }} -->
 			{% endif %}
 
 			{% block content %}

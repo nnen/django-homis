@@ -3,24 +3,43 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic import ListView
 
-from models import Transaction, Person
-from forms import SimplePaymentForm
+from homis_core.models import Person
+
+from models import Transaction
+from forms import SimplePaymentForm, TransactionForm, TransactionItemForm, TransactionItemFormSet
 
 
 class TransactionList(ListView):
     model = Transaction
 
 
-def index(request):
+def index(request, messages = None):
+    if messages is None:
+        messages = []
+
+    print "MESSAGES: %r" % (messages, )
+
     #latest_question_list = Question.objects.order_by('-pub_date')[:5]
     transactions = Transaction.objects.order_by('-date')
-    template = loader.get_template('finances/index.html')
-    context = RequestContext(request, {
-        'transaction_list': transactions,
-        'last_transaction': transactions[0],
-        'simple_payment_form': SimplePaymentForm(),
-    })
-    return HttpResponse(template.render(context))
+    #template = loader.get_template('finances/index.html')
+    #context = RequestContext(request, {
+    #    'transaction_list': transactions,
+    #     'last_transaction': Transaction.get_last(),
+    #     'simple_payment_form': SimplePaymentForm(),
+    #     'messages': messages,
+    # })
+    # return HttpResponse(template.render(context))
+
+    return render(
+        request,
+        'finances/index.html',
+        {
+            'transaction_list': transactions,
+            'last_transaction': Transaction.get_last(),
+            'simple_payment_form': SimplePaymentForm(),
+            'messages': messages,
+        }
+    )
 
     #return HttpResponse("Hello, world. You're at the polls index.")
 
@@ -89,3 +108,53 @@ def transactions(request, transaction_id = None):
             }
         )
 
+
+def add_transaction(request):
+    messages = []
+
+    if request.method == "POST":
+        form = TransactionForm(request.POST)
+        formset = TransactionItemFormSet(request.POST)
+
+        if form.is_valid():
+            items = []
+
+            for item_form in formset:
+                if not item_form.is_valid():
+                    continue
+
+                data = item_form.cleaned_data
+                person = data.get("person", None)
+                amount = data.get("amount", 0.0)
+                weight = data.get("weight", 1.0)
+
+                if person is None:
+                    continue
+
+                items.append((person, amount, weight))
+
+            if len(items) > 0:
+                Transaction.create_complex(
+                    items,
+                    request.user,
+                    description = form.cleaned_data["description"],
+                    )
+                messages.append("Transaction added.")
+                return index(request, messages = messages)
+            else:
+                messages.append("No transaction items specified.")
+        else:
+            messages.append("Form is not valid.")
+    else:
+        form = TransactionForm()
+        formset = TransactionItemFormSet()
+
+    return render(
+        request,
+        'finances/add_transaction.html',
+        {
+            "messages": messages,
+            'form': form,
+            'formset': formset,
+        }
+    )

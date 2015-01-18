@@ -10,4 +10,5 @@ urlpatterns = patterns('',
 
     url(r'^$', "finances.views.index"),
     url(r'^finances/', include('finances.urls'), name = "finances"),
+    url(r'^core/', include('homis_core.urls'), name = "core"),
 )

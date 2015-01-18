@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'homis_core',
     'finances',
 )
 
@@ -85,6 +86,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    '/Users/jan/Projects/django-homis/django_homis/static',    
-   #'/home/jan/Projects/django-homis/django_homis/django_homis/static',
+    #'/Users/jan/Projects/django-homis/django_homis/static',
+    #'/home/jan/Projects/django-homis/django_homis/django_homis/static',
 )

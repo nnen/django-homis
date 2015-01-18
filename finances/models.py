@@ -5,18 +5,7 @@ from django.db import models
 from django.db import transaction as db_transaction
 from django.contrib.auth.models import User
 
-
-class Person(models.Model):
-    user  = models.OneToOneField(User, blank = True, null = True, related_name = "person")
-
-    nick_name  = models.CharField(max_length = 128)
-    email = models.EmailField(blank = True)
-
-    account_number = models.IntegerField(blank = True, null = True)
-    bank_number    = models.IntegerField(blank = True, null = True)
-
-    def __unicode__(self):
-        return unicode(self.nick_name)
+from homis_core.models import Person
 
 
 class Transaction(models.Model):
@@ -88,7 +77,10 @@ class Transaction(models.Model):
 
     @classmethod
     def get_last(cls):
-        return cls.objects.order_by("-date")[0]
+        try:
+            return cls.objects.order_by("-date")[0]
+        except IndexError:
+            return None
 
     @classmethod
     def create_simple_payment(self, from_person, to_person, amount, current_user, description = ""):
@@ -108,6 +100,25 @@ class Transaction(models.Model):
 
             item1.save()
             item2.save()
+
+            transaction.recalculate_debt_graph()
+            transaction.save()
+
+    @classmethod
+    def create_complex(self, items, current_user, description = ""):
+        with db_transaction.atomic():
+            transaction = Transaction(
+                entered_by = current_user,
+                description = description)
+            transaction.save()
+
+            for person, amount, weight in items:
+                item = TransactionItem(
+                    transaction = transaction,
+                    person = person,
+                    paid_amount = amount,
+                    weight = weight)
+                item.save()
 
             transaction.recalculate_debt_graph()
             transaction.save()
@@ -246,7 +257,7 @@ class DebtGraph(object):
                         debtor.add_debt(creditor2, min_amount)
 
                         change = True
-    
+
     @property
     def debts(self):
         for debtor in self.nodes.values():

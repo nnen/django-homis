@@ -10,8 +10,20 @@ table {
 	border-collapse: collapse;
 }
 
+td {
+	padding: 2pt 8pt;
+	margin: 0px;
+}
+
 th {
+	padding: 2pt 8pt;
+
 	background-color: #444;
+	color: white;
+}
+
+form th {
+	vertical-align: top;
 }
 
 .title_bar {
@@ -85,3 +97,28 @@ th {
 	display: block;
 	padding: 8pt;
 }
+
+.form_action_row {
+	text-align: right;
+}
+
+.form_action_row input {
+	float: right;
+}
+
+/*
+.form_submit_input {
+	display: block;
+	float: left;
+
+	padding: 4pt 6pt;
+	margin: 2pt 4pt 2pt 0pt;
+	border-radius: 4px;
+
+	background-color: #4A4;
+
+	color: white;
+
+	text-decoration: none;
+}
+*/
