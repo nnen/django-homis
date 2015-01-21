@@ -1,4 +1,4 @@
-{% extends "homis_core/base.html" %}
+{% extends "finances/base.html" %}
 
 {% load finances_extra %}
 
@@ -22,7 +22,7 @@
 					{% endfor %}
 				</tr>
 				{% endif %}
-				<tr>
+				<tr class="{% cycle "odd_row" "even_row" %}">
 					{% for field in item_form.visible_fields %}
 					<td>
 						{% if forloop.first %}

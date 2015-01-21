@@ -4,7 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="{% static "homis_core/base.css" %}" />
 		<link rel="stylesheet" type="text/css" href="{% static "finances/finances.css" %}" />
 
-		<script type="text/javascript" src="{% static "homis_core/jquery-1.11.2.min" %}"></script>
+		<script type="text/javascript" src="{% static "homis_core/jquery-1.11.2.min.js" %}"></script>
 
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
@@ -23,19 +23,23 @@
 						username:
 						<input type="text" name="username" />
 						password:
-						<input type="text" name="password" />
+						<input type="password" name="password" />
 						<input type="submit" value="log in" />
 					</form>
-				{% endif %}
-				
+				{% endif %}	
 			</div>
 
-			<h1>Finances</h1>
+			{% block title %}
+			<h1>Core</h1>
+			{% endblock %}
 
+			{% block tile_menu %}
 			<ul>
+				<li><a href="{% url 'homis_core.views.people' %}">People</a></li>
 				<li><a href="{% url 'finances.views.index' %}">Finances</a></li>
 				<li><a href="{% url 'admin:index' %}">Admin</a></li>
 			</ul>
+			{% endblock %}
 		</div>
 
 		<div class="action_bar">
@@ -47,7 +51,7 @@
 			{% if messages %}
 			<div class="message_container">
 				{% for message in messages %}
-				<div class="message_box">
+				<div class="message_box {% if message.is_error %}message_error{% endif %}">
 					{{ message }}
 				</div>
 				{% endfor %}

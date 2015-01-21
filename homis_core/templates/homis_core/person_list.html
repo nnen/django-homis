@@ -1,0 +1,25 @@
+{% extends "homis_core/base.html" %}
+
+{% block content %}
+<table>
+	<tr>
+		<th>Nick</th>
+		<th>User Name</th>
+		<th>E-mail</th>
+		<th>Bank Account</th>
+	</tr>
+	{% for person in person_list %}
+	<tr class="{% cycle "odd_row" "even_row" %}">
+		<td>{{ person.nick_name }}</td>
+		<td>{% if person.user %}{{ person.user }}{% endif %}</td>
+		<td><a href="mailto:{{ person.email }}">{{ person.email }}</a></td>
+		<td>
+			{% if person.account_number %}
+				{{ person.account_number }} / {{ person.bank_number }}
+			{% endif %}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}
+

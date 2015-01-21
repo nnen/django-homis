@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic import ListView
 
-from homis_core.models import Person
+from homis_core.models import Person, MessageList
 
 from models import Transaction
 from forms import SimplePaymentForm, TransactionForm, TransactionItemForm, TransactionItemFormSet
@@ -44,12 +44,16 @@ def index(request, messages = None):
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def add_simple_payment(request):
-    messages = []
+def add_simple_payment(request, messages = None):
+    messages = MessageList.make(messages)
 
     if request.method == "POST":
         form = SimplePaymentForm(request.POST)
         if form.is_valid():
+            if not request.user.is_authenticated():
+                messages.error(
+                    "Cannot add simple payment, user not logged in.")
+                return index(request, messages)
             data = form.cleaned_data
             Transaction.create_simple_payment(
                 data["from_person"],
@@ -69,9 +73,9 @@ def add_simple_payment(request):
         request,
         'finances/index.html',
         {
-            "messages": messages,
+            "messages":            messages,
             'simple_payment_form': form,
-            "transaction_list": transactions,
+            "transaction_list":    transactions,
         }
     )
 

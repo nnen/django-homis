@@ -2,11 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth import logout, login, authenticate
 
 from homis_core.forms import LogInForm
+from homis_core.models import Person, MessageList
 
 
 def index(request, messages = None):
-    if messages is None:
-        messages = []
+    messages = MessageList.make(messages)
 
     return render(
         request,
@@ -41,3 +41,13 @@ def log_out(request):
     logout(request)
     messages = ["User logged out."]
     return index(request, messages)
+
+
+def people(request):
+    return render(
+        request,
+        "homis_core/person_list.html",
+        {
+            'person_list': Person.objects.all(),
+        }
+    )

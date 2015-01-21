@@ -85,7 +85,9 @@ class Transaction(models.Model):
     @classmethod
     def create_simple_payment(self, from_person, to_person, amount, current_user, description = ""):
         with db_transaction.atomic():
-            transaction = Transaction(entered_by = current_user, description = description)
+            transaction = Transaction(
+                entered_by = current_user,
+                description = description)
             transaction.save()
 
             item1 = TransactionItem(

@@ -10,6 +10,10 @@ table {
 	border-collapse: collapse;
 }
 
+tr.odd_row td {
+	background-color: #DDE;
+}
+
 td {
 	padding: 2pt 8pt;
 	margin: 0px;
@@ -44,6 +48,8 @@ form th {
 }
 
 .title_bar ul li {
+	margin: 2pt 8pt;
+
 	display: inline;
 }
 
@@ -91,6 +97,12 @@ form th {
 	background-color: #FF9;
 	border-radius: 4px;
 	padding: 2pt 8pt;
+}
+
+.message_error {
+	background-color: #F99;
+
+	font-weight: bold;
 }
 
 .content {

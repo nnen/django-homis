@@ -8,4 +8,6 @@ urlpatterns = patterns('',
 
     url(r'log_in', views.log_in),
     url(r'log_out', views.log_out),
+
+    url(r'people', views.people),
 )

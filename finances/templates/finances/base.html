@@ -1,52 +1,7 @@
+{% extends "homis_core/base.html" %}
+
 {% load staticfiles %}
-<html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="{% static "base.css" %}" />
-		<link rel="stylesheet" type="text/css" href="{% static "finances/finances.css" %}" />
 
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-
-		{% block meta %}
-		{% endblock %}
-	</head>
-
-	<body>
-		<div class="title_bar">
-			<div class="login_box">
-				{% if user.is_authenticated %}
-					{{ user.username }} | log out
-				{% else %}
-					{{ login_form }}
-				{% endif %}
-				
-			</div>
-
-			<h1>Finances</h1>
-
-			<ul>
-				<li><a href="{% url 'finances.views.index' %}">Finances</a></li>
-				<li><a href="{% url 'admin:index' %}">Admin</a></li>
-			</ul>
-		</div>
-
-		<div class="action_bar">
-			<a href="/finances/add_simple_payment" class="action_button">Simple payment</a>
-			<a href="/finances/add_transaction" class="action_button">Transaction</a>
-		</div>
-
-		<span class="content">
-			{% if messages %}
-			<div class="message_container">
-				{% for message in messages %}
-				<div class="message_box">
-					{{ message }}
-				</div>
-				{% endfor %}
-			</div>
-			{% endif %}
-
-			{% block content %}
-			{% endblock %}
-		</span>
-	</body>
-</html>
+{% block title %}
+<h1>Finances</h1>
+{% endblock %}
