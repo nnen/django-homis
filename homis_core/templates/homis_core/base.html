@@ -16,9 +16,9 @@
 		<div class="title_bar">
 			<div class="login_box">
 				{% if user.is_authenticated %}
-					{{ user.username }} | <a href="{% url 'homis_core.views.log_out' %}">log out</a>
+					{{ user.username }} | <a href="{% url 'homis_core:log-out' %}">log out</a>
 				{% else %}
-					<form action="{% url 'homis_core.views.log_in' %}" method="POST">
+					<form action="{% url 'homis_core:log-in' %}" method="POST">
 						{% csrf_token %}
 						username:
 						<input type="text" name="username" />
@@ -35,8 +35,8 @@
 
 			{% block tile_menu %}
 			<ul>
-				<li><a href="{% url 'homis_core.views.people' %}">People</a></li>
-				<li><a href="{% url 'finances.views.index' %}">Finances</a></li>
+				<li><a href="{% url 'homis_core:people' %}">People</a></li>
+				<li><a href="{% url 'finances:index' %}">Finances</a></li>
 				<li><a href="{% url 'admin:index' %}">Admin</a></li>
 			</ul>
 			{% endblock %}

@@ -3,7 +3,7 @@
 {% load finances_extra %}
 
 {% block content %}
-	<form action="{% url 'finances.views.add_transaction' %}" method="POST">
+	<form action="{% url 'finances:add-transaction' %}" method="POST">
 		<table>
 			{% csrf_token %}
 

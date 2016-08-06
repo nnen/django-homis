@@ -100,9 +100,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/homis_static/'
 
-STATICFILES_DIRS = (
-    #'/Users/jan/Projects/django-homis/django_homis/static',
-    #'/home/jan/Projects/django-homis/django_homis/django_homis/static',
-)
+STATIC_ROOT = '/var/www/html/homis_static'
+
+#STATICFILES_DIRS = (
+#	#'/Users/jan/Projects/django-homis/django_homis/static',
+#	os.path.join(BASE_DIR, "static"),
+#	#'/var/www/static/',
+#)

@@ -1,5 +1,5 @@
 {% if user.is_authenticated %}
-<form action="{% url 'finances.views.add_simple_payment' %}" method="post">
+<form action="{% url 'finances:add-simple-payment' %}" method="post">
 	{% csrf_token %}
 	{{ simple_payment_form }}
 	<input type="submit" value="Add" />

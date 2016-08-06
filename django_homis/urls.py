@@ -19,8 +19,8 @@ urlpatterns = [
     #url(r'^$', "finances.views.index"),
     url(r'^$', finances.views.index),
 
-    url(r'^finances/', include('finances.urls'), name = "finances"),
-    url(r'^core/', include('homis_core.urls'), name = "core"),
+    url(r'^finances/', include('finances.urls', namespace = "finances")),
+    url(r'^core/', include('homis_core.urls', namespace = "homis_core")),
 ]
 
 
