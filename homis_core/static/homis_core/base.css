@@ -12,11 +12,13 @@ table {
 
 tr.odd_row td {
 	background-color: #DDE;
+	border-bottom: solid 1px #CCD;
 }
 
 td {
 	padding: 2pt 8pt;
 	margin: 0px;
+	border-bottom: solid 1px #CCD;
 }
 
 th {
@@ -28,6 +30,33 @@ th {
 
 form th {
 	vertical-align: top;
+}
+
+form input.form_button {
+	padding: 3pt 9pt;
+	
+	border: none;
+	border-radius: 4px;
+	
+	color: white;
+
+	background-color: #4A4;
+}
+
+form input.form_button:hover {
+	background-color: #282;
+}
+
+a {
+	color: #0A0;
+
+	text-decoration: none;
+}
+
+a:hover {
+	color: #4E4;
+	
+	text-decoration: underline;
 }
 
 .title_bar {
@@ -91,6 +120,10 @@ form th {
 
 .action_button:hover {
 	background-color: #282;
+	
+	color: white;
+
+	text-decoration: none;
 }
 
 .message_box {
